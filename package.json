@@ -1,0 +1,33 @@
+{
+  "name": "cogniplane-quote-picker-mcp",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc && vite build",
+    "typecheck": "tsc",
+    "start": "node main.ts",
+    "start:stdio": "node main.ts --stdio",
+    "test": "vite build && node --test test/*.test.ts"
+  },
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/express": "^2.0.1",
+    "@modelcontextprotocol/ext-apps": "2.0.0",
+    "@modelcontextprotocol/node": "^2.1.0",
+    "@modelcontextprotocol/server": "^2.1.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.13.6",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.0",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}
