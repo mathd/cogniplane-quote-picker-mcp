@@ -23,7 +23,7 @@ npm run start:stdio    # stdio transport
 
 Run `npm run build` again after you change the UI. The server reads `dist/index.html` on each `resources/read`.
 
-The HTTP server listens on 127.0.0.1 only. The SDK rejects requests with a non-localhost `Origin` header (HTTP 403).
+The HTTP server listens on all IPv4 interfaces, including the WSL2 NetBird interface. It accepts requests addressed to a local interface IP or `localhost`. Set `MCP_ALLOWED_HOSTS` to a comma-separated list if a proxy sends another hostname in the `Host` header. The server has no authentication, so limit access to trusted networks. Requests with an unlisted `Host` or `Origin` get HTTP 403.
 
 To see the UI in a host, use the `basic-host` example from [ext-apps](https://github.com/modelcontextprotocol/ext-apps) (`examples/basic-host`, `npm start`, then open http://localhost:8080). Or add the stdio command to a desktop MCP client:
 
