@@ -4,16 +4,12 @@ import {
   RESOURCE_MIME_TYPE,
 } from "@modelcontextprotocol/ext-apps/server";
 import { McpServer } from "@modelcontextprotocol/server";
-import fs from "node:fs/promises";
-import path from "node:path";
 import { z } from "zod";
 import { QUOTES, SEATS, quoteSummary, type QuotePickerData } from "./src/quotes.ts";
 
 export const TOOL_NAME = "show_quote_picker";
 export const RESOURCE_URI = "ui://quote-picker/app.html";
-const HTML_PATH = path.join(import.meta.dirname, "dist", "index.html");
-
-export function createServer(): McpServer {
+export function createServer(loadHtml: () => Promise<string>): McpServer {
   const server = new McpServer({ name: "Quote Picker", version: "1.0.0" });
 
   registerAppTool(
@@ -43,7 +39,7 @@ export function createServer(): McpServer {
     { mimeType: RESOURCE_MIME_TYPE },
     async () => ({
       contents: [
-        { uri: RESOURCE_URI, mimeType: RESOURCE_MIME_TYPE, text: await fs.readFile(HTML_PATH, "utf-8") },
+        { uri: RESOURCE_URI, mimeType: RESOURCE_MIME_TYPE, text: await loadHtml() },
       ],
     }),
   );

@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "cogniplane-demo-quote-picker-mcp",
+  "main": "worker.ts",
+  "compatibility_date": "2026-09-24",
+  "workers_dev": false,
+  "preview_urls": false,
+  "routes": [
+    { "pattern": "quote-picker.demo.cogniplane.io", "custom_domain": true }
+  ],
+  "observability": { "enabled": true }
+}

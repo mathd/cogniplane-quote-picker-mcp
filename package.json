@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc && vite build",
+    "cf:dev": "npm run build && wrangler dev",
+    "cf:dry-run": "npm run build && wrangler deploy --dry-run",
+    "cf:deploy": "npm run build && wrangler deploy",
     "typecheck": "tsc",
     "start": "node main.ts",
     "start:stdio": "node main.ts --stdio",
@@ -28,6 +31,7 @@
     "@types/node": "^24.13.6",
     "typescript": "^7.0.2",
     "vite": "^8.3.0",
-    "vite-plugin-singlefile": "^2.3.3"
+    "vite-plugin-singlefile": "^2.3.3",
+    "wrangler": "^4.137.0"
   }
 }

@@ -2,9 +2,14 @@ import { createMcpExpressApp } from "@modelcontextprotocol/express";
 import { NodeStreamableHTTPServerTransport } from "@modelcontextprotocol/node";
 import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
 import cors from "cors";
+import fs from "node:fs/promises";
 import { networkInterfaces } from "node:os";
+import path from "node:path";
 import type { Request, Response } from "express";
 import { createServer } from "./server.ts";
+
+const HTML_PATH = path.join(import.meta.dirname, "dist", "index.html");
+const loadHtml = () => fs.readFile(HTML_PATH, "utf-8");
 
 function allowedHosts(): string[] {
   const hosts = new Set(["localhost", "127.0.0.1", "[::1]"]);
@@ -26,7 +31,7 @@ export function createHttpApp() {
   app.use(cors());
 
   app.all("/mcp", async (req: Request, res: Response) => {
-    const server = createServer();
+    const server = createServer(loadHtml);
     const transport = new NodeStreamableHTTPServerTransport({ sessionIdGenerator: undefined });
     res.on("close", () => {
       transport.close().catch(() => {});
@@ -48,7 +53,7 @@ export function createHttpApp() {
 
 if (import.meta.main) {
   if (process.argv.includes("--stdio")) {
-    await createServer().connect(new StdioServerTransport());
+    await createServer(loadHtml).connect(new StdioServerTransport());
   } else {
     const port = Number(process.env.PORT ?? 3108);
     createHttpApp().listen(port, "0.0.0.0", (err) => {

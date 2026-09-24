@@ -23,6 +23,20 @@ npm run start:stdio    # stdio transport
 
 Run `npm run build` again after you change the UI. The server reads `dist/index.html` on each `resources/read`.
 
+## Deploy to Cloudflare
+
+The Worker serves the same MCP tool and UI resource at `https://quote-picker.demo.cogniplane.io/mcp`. Wrangler bundles `dist/index.html` with the Worker. Build before each deploy so the UI and quote data come from the same revision.
+
+```sh
+npm install
+npm run cf:dry-run
+npm run cf:deploy
+```
+
+The `wrangler.jsonc` Custom Domain creates the DNS record and TLS certificate in the Cloudflare zone when you deploy. Use a Cloudflare account with access to `cogniplane.io`. If that hostname already has a DNS record, remove the conflicting record before deployment. Check the endpoint after deployment with the protocol commands below, using `https://quote-picker.demo.cogniplane.io/mcp` in place of the local URL.
+
+In Cogniplane, set the Quote Picker gateway upstream URL to `https://quote-picker.demo.cogniplane.io/mcp` and keep its gateway route `/mcp/quote-picker`. The gateway will then call the public HTTPS endpoint. The Worker has no authentication because this app contains only fictional data and its tool is read only. Do not use this setup for private MCP data.
+
 The HTTP server listens on all IPv4 interfaces, including the WSL2 NetBird interface. It accepts requests addressed to a local interface IP or `localhost`. Set `MCP_ALLOWED_HOSTS` to a comma-separated list if a proxy sends another hostname in the `Host` header. The server has no authentication, so limit access to trusted networks. Requests with an unlisted `Host` or `Origin` get HTTP 403.
 
 To see the UI in a host, use the `basic-host` example from [ext-apps](https://github.com/modelcontextprotocol/ext-apps) (`examples/basic-host`, `npm start`, then open http://localhost:8080). Or add the stdio command to a desktop MCP client:
